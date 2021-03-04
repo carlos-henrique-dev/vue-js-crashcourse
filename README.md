@@ -1,6 +1,6 @@
 # vue-js-crashcourse
 
-this project was developed following the [Traversy Media[(https://www.youtube.com/watch?v=qZXt1Aom3Cs&ab_channel=TraversyMedia) VueJS crashcourse
+this project was developed following the [Traversy Media](https://www.youtube.com/watch?v=qZXt1Aom3Cs&ab_channel=TraversyMedia) VueJS crashcourse
 
 ## How to run this project
 
