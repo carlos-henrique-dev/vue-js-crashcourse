@@ -22,41 +22,30 @@
         </div>
       </div>
 
-      <span class="price">{{ randomPrice() }}</span>
+      <span class="price">{{
+        price.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        })
+      }}</span>
     </div>
 
     <div class="action">
-      <button>Adicionar</button>
+      <button @click="actionAddToCart({ ...movie, price })">Adicionar</button>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "MovieCard",
   props: {
     movie: Object,
   },
-  computed: {
-    ...mapGetters(["movieGenre"]),
-  },
-
-  data() {
-    return {
-      randomPrice: () =>
-        (Math.floor(Math.random() * 10000 + 2000) / 100).toLocaleString(
-          "pt-BR",
-          {
-            style: "currency",
-            currency: "BRL",
-          }
-        ),
-    };
-  },
-
   methods: {
+    ...mapActions(["actionAddToCart"]),
     getImageUrl(url) {
       return `http://image.tmdb.org/t/p/w200${url}`;
     },
@@ -67,6 +56,16 @@ export default {
         year: "numeric",
       });
     },
+    randomPrice: () => Math.floor(Math.random() * 10000 + 2000) / 100,
+  },
+  computed: {
+    ...mapGetters(["movieGenre"]),
+  },
+
+  data() {
+    return {
+      price: this.randomPrice(),
+    };
   },
 };
 </script>

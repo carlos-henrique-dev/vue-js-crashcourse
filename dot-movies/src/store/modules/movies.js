@@ -10,9 +10,10 @@ const getters = {
 
 const actions = {
   async getMovies({ commit }) {
-    const response = await axiosClient.get("/movie/popular", {
+    const response = await axiosClient.get("movie/popular", {
       params: { page: 1 },
     });
+
     commit("setMovies", response.data.results);
   },
 };

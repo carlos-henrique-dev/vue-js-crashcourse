@@ -6,15 +6,20 @@
       <i class="fas fa-search"></i>
     </div>
     <div class="options">
-      <i class="fas fa-heart with-list"></i>
-      <i class="fas fa-shopping-cart cart"></i>
+      <i @click.prevent="toggleWishList" class="fas fa-heart wish-list"></i>
+      <i @click.prevent="toggleCart" class="fas fa-shopping-cart cart"></i>
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "Header",
+  methods: {
+    ...mapActions(["toggleCart", "toggleWishList"]),
+  },
 };
 </script>
 
@@ -75,7 +80,7 @@ export default {
     display: flex;
     margin: auto 0;
 
-    .with-list,
+    .wish-list,
     .cart {
       cursor: pointer;
       color: #fff;
@@ -84,13 +89,13 @@ export default {
       transition: transform 0.3s, color 0.3s;
     }
 
-    .with-list {
+    .wish-list {
       margin-right: 20px;
     }
 
-    .with-list:hover,
+    .wish-list:hover,
     .cart:hover,
-    .with-list:active,
+    .wish-list:active,
     .cart:active {
       color: #fbe192;
       transform: scale(1.2);

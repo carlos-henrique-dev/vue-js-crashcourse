@@ -16,9 +16,14 @@ export default {
     ...mapActions(["getMovies", "getGenres"]),
   },
   computed: mapGetters(["allMovies"]),
+  data() {
+    return {
+      page: 1,
+    };
+  },
   created() {
     this.getGenres();
-    this.getMovies();
+    this.getMovies(this.page);
   },
 };
 </script>
