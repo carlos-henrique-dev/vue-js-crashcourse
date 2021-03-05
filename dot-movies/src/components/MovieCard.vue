@@ -1,7 +1,10 @@
 <template>
   <div class="card">
     <div class="cover">
-      <i class="fas fa-heart"></i>
+      <i
+        @click="actionAddToWishList({ ...movie, price })"
+        class="fas fa-heart"
+      ></i>
       <div class="release-date">
         <span>{{ getDate(movie.release_date) }}</span>
       </div>
@@ -45,7 +48,7 @@ export default {
     movie: Object,
   },
   methods: {
-    ...mapActions(["actionAddToCart"]),
+    ...mapActions(["actionAddToCart", "actionAddToWishList"]),
     getImageUrl(url) {
       return `http://image.tmdb.org/t/p/w200${url}`;
     },

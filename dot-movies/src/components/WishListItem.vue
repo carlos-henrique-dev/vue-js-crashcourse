@@ -1,13 +1,12 @@
 <template>
-  <div class="cart-item">
+  <div class="wishlist-item">
     <img :src="getImageUrl(item.poster_path)" />
 
     <h1 class="title">{{ item.title }}</h1>
 
-    <span class="amount">1</span>
-
     <span class="price">{{ item.price }}</span>
 
+    <i @click="actionAddToCart(item)" class="fas fa-shopping-cart"></i>
     <i @click="actionRemoveFromCart(item.id)" class="fas fa-trash"></i>
   </div>
 </template>
@@ -16,7 +15,7 @@
 import { mapActions } from "vuex";
 
 export default {
-  name: "CartItem",
+  name: "WishListItem",
   props: {
     item: Object,
   },
@@ -30,7 +29,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.cart-item {
+.wishlist-item {
   width: 100%;
   height: 40px;
   box-sizing: border-box;
@@ -59,16 +58,20 @@ export default {
   i {
     cursor: pointer;
     font-size: 14px;
-    color: #cecece;
+    color: #a5a5a5;
     transition: color 0.3s;
   }
 
-  i:hover {
+  .fa-trash:hover {
     color: red;
+  }
+
+  .fa-shopping-cart:hover {
+    color: #1aae9f;
   }
 }
 
-.cart-item:hover {
+.wishlist-item:hover {
   background-color: #cecece;
 }
 </style>

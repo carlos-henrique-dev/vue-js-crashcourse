@@ -4,7 +4,7 @@ const state = {
 };
 
 const getters = {
-  allWishListItems: (state) => state.allCartItems,
+  allWishListItems: (state) => state.wishListItems,
   showWishList: (state) => state.showWishList,
 };
 
@@ -15,6 +15,12 @@ const actions = {
     }
     commit("toggleWishList");
   },
+  actionAddToWishList({ commit }, movie) {
+    commit("addToWishList", movie);
+  },
+  actionClearWishList({ commit }) {
+    commit("clearWishList");
+  },
 };
 
 const mutations = {
@@ -24,8 +30,9 @@ const mutations = {
     }
     state.showWishList = !state.showWishList;
   },
-  addToWishList: (state, item) => (state.wishListItems = [...wishListItems, item]),
+  addToWishList: (state, item) => (state.wishListItems = [...state.wishListItems, item]),
   removeFromWishList: (state, id) => (state.wishListItems = state.wishListItems.filter((item) => item.id !== id)),
+  clearWishList: (state) => (state.wishListItems = []),
 };
 
 export default {
