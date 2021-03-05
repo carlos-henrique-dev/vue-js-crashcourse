@@ -4,10 +4,18 @@
 
     <h1 class="title">{{ item.title }}</h1>
 
-    <span class="price">{{ item.price }}</span>
+    <span class="price">{{
+      item.price.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      })
+    }}</span>
 
     <i @click="actionAddToCart(item)" class="fas fa-shopping-cart"></i>
-    <i @click="actionRemoveFromCart(item.id)" class="fas fa-trash"></i>
+    <i
+      @click="!isOnCart ? actionRemoveFromCart(item.id) : null"
+      class="fas fa-trash"
+    ></i>
   </div>
 </template>
 

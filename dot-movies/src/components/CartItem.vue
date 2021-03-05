@@ -6,7 +6,12 @@
 
     <span class="amount">1</span>
 
-    <span class="price">{{ item.price }}</span>
+    <span class="price">{{
+      item.price.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      })
+    }}</span>
 
     <i @click="actionRemoveFromCart(item.id)" class="fas fa-trash"></i>
   </div>

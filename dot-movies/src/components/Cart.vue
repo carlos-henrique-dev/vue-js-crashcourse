@@ -17,11 +17,13 @@
       }}</span>
     </div>
 
-    <div class="action">
-      <button :disabled="allCartItems.length === 0" @click="alert()">
-        Finalizar compra
-      </button>
-    </div>
+    <router-link
+      class="action"
+      :to="allCartItems.length === 0 ? '' : '/checkout'"
+      :class="allCartItems.length === 0 ? 'disabled' : ''"
+    >
+      Finalizar compra
+    </router-link>
   </div>
 </template>
 
@@ -76,6 +78,7 @@ export default {
   }
 
   .cart-total {
+    position: relative;
     margin-top: 50px;
     display: flex;
     justify-content: space-between;
@@ -86,20 +89,19 @@ export default {
     }
   }
 
-  .action {
-    button {
-      width: 100%;
-      margin: 15px 0 0;
-      background: #6558f5;
-      border: none;
-      padding: 10px 5px;
-      color: #fff;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-    }
+  a {
+    float: right;
+    margin-top: 30px;
+    text-decoration: none;
+    background: #6558f5;
+    border: none;
+    padding: 10px 5px;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
 
-    button:disabled {
+    &.disabled {
       background: #797979;
     }
   }
