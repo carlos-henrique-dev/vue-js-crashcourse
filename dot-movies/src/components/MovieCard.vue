@@ -4,6 +4,7 @@
       <i
         @click="actionAddToWishList({ ...movie, price })"
         class="fas fa-heart"
+        :class="!!isOnWishList(movie.id) ? 'on-wish' : ''"
       ></i>
       <div class="release-date">
         <span>{{ getDate(movie.release_date) }}</span>
@@ -33,8 +34,10 @@
       }}</span>
     </div>
 
-    <div class="action">
-      <button @click="actionAddToCart({ ...movie, price })">Adicionar</button>
+    <div class="action" :class="!!isOnCart(movie.id) ? 'on-cart' : ''">
+      <button @click="actionAddToCart({ ...movie, price })">
+        {{ !isOnCart(movie.id) ? "Adicionar" : "Adicionado" }}
+      </button>
     </div>
   </div>
 </template>
@@ -62,7 +65,7 @@ export default {
     randomPrice: () => Math.floor(Math.random() * 10000 + 2000) / 100,
   },
   computed: {
-    ...mapGetters(["movieGenre"]),
+    ...mapGetters(["movieGenre", "isOnWishList", "isOnCart"]),
   },
 
   data() {
@@ -102,6 +105,10 @@ export default {
       margin: 10px 10px 0 0;
       cursor: pointer;
       transition: transform 0.3s;
+
+      &.on-wish {
+        color: red;
+      }
     }
 
     .release-date {
@@ -187,6 +194,13 @@ export default {
 
     button:hover {
       font-size: 16px;
+    }
+
+    &.on-cart {
+      button {
+        background: #8a8a8a;
+        cursor: default;
+      }
     }
   }
 }

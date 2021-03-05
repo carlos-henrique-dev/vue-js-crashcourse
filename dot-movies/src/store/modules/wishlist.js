@@ -6,6 +6,7 @@ const state = {
 const getters = {
   allWishListItems: (state) => state.wishListItems,
   showWishList: (state) => state.showWishList,
+  isOnWishList: (state) => (id) => state.wishListItems.find((elem) => elem.id === id),
 };
 
 const actions = {

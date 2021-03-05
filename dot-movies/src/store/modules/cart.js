@@ -6,6 +6,7 @@ const state = {
 const getters = {
   allCartItems: (state) => state.cartItems,
   showCart: (state) => state.showCart,
+  isOnCart: (state) => (id) => state.cartItems.find((elem) => elem.id === id),
   cartTotalPrice: (state) =>
     state.cartItems.reduce((total, cartItem) => {
       return total + cartItem.price;

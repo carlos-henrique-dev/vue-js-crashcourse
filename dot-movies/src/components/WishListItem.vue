@@ -19,6 +19,7 @@ export default {
   props: {
     item: Object,
   },
+
   methods: {
     ...mapActions(["actionAddToCart", "actionRemoveFromCart"]),
     getImageUrl(url) {
