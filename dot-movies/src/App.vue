@@ -5,6 +5,7 @@
 
 <script>
 import Header from "./components/Header";
+
 export default {
   name: "App",
   components: { Header },
@@ -26,7 +27,7 @@ html {
   overflow-x: hidden;
 }
 ::-webkit-scrollbar {
-  width: 0px; /* Remove scrollbar space */
-  background: transparent; /* Optional: just make scrollbar invisible */
+  width: 0px;
+  background: transparent;
 }
 </style>

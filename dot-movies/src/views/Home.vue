@@ -1,10 +1,12 @@
 <template>
-  <div class="home">home</div>
+  <Movies />
 </template>
 
 <script>
+import Movies from "../components/Movies";
+
 export default {
   name: "Home",
-  components: {},
+  components: { Movies },
 };
 </script>
