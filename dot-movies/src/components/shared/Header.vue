@@ -30,13 +30,14 @@ import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "Header",
-  computed: mapGetters(["cartItemsAmount"]),
+  computed: mapGetters(["cartItemsAmount", "filterOn"]),
   methods: {
     ...mapActions([
       "toggleCart",
       "toggleWishList",
       "searchMovies",
       "getMovies",
+      "setFilter",
     ]),
     search() {
       if (this.query !== "") {
@@ -56,6 +57,10 @@ export default {
 
 <style lang="scss">
 .nav {
+  position: fixed;
+  box-sizing: border-box;
+  width: 100%;
+  z-index: 10;
   background: #8dd7cf;
   display: flex;
   flex-direction: row;

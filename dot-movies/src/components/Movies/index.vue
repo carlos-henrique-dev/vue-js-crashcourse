@@ -1,10 +1,10 @@
 <template>
-  <Spinner v-show="isLoading" />
-  <div class="movies-container" v-show="!isLoading && allMovies.length > 0">
+  <div class="movies-container">
     <div v-for="movie in allMovies || []" :key="movie.id">
       <MovieCard :movie="movie" />
     </div>
   </div>
+  <Spinner v-show="isLoading" />
   <div class="no-movie" v-show="!isLoading && allMovies.length === 0">
     <span>Nenhum filme encontrado </span>
     <i class="fas fa-frown"></i>
@@ -18,25 +18,35 @@ import Spinner from "../shared/Spinner";
 export default {
   name: "Movies",
   components: { MovieCard, Spinner },
+  computed: mapGetters(["cartItemsAmount"]),
   methods: {
     ...mapActions(["getMovies", "getGenres"]),
+    scroll() {
+      window.onscroll = () => {
+        if (
+          window.innerHeight + window.scrollY >= document.body.scrollHeight &&
+          !this.$store.getters.filterOn
+        ) {
+          this.getMovies();
+        }
+      };
+    },
   },
   computed: mapGetters(["allMovies", "isLoading"]),
-  data() {
-    return {
-      page: 1,
-    };
-  },
+
   created() {
     this.getGenres();
-    this.getMovies(this.page);
+    this.getMovies();
+  },
+  mounted() {
+    this.scroll();
   },
 };
 </script>
 
 <style lang="scss">
 .movies-container {
-  padding: 50px;
+  padding: 100px 50px 50px;
   box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
