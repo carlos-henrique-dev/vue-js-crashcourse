@@ -2,7 +2,7 @@
   <div class="card">
     <div class="cover">
       <i
-        @click="actionAddToWishList({ ...movie, price })"
+        @click="handleWishList({ ...movie, price })"
         class="fas fa-heart"
         :class="!!isOnWishList(movie.id) ? 'on-wish' : ''"
       ></i>
@@ -51,7 +51,11 @@ export default {
     movie: Object,
   },
   methods: {
-    ...mapActions(["actionAddToCart", "actionAddToWishList"]),
+    ...mapActions([
+      "actionAddToCart",
+      "actionAddToWishList",
+      "actionRemoveFromWishList",
+    ]),
     getImageUrl(url) {
       if (!!url) return `http://image.tmdb.org/t/p/w200${url}`;
       return "";
@@ -64,6 +68,14 @@ export default {
       });
     },
     randomPrice: () => Math.floor(Math.random() * 10000 + 2000) / 100,
+    handleWishList(movie) {
+      const item = this.$store.getters.isOnWishList(movie.id);
+      if (item) {
+        this.actionRemoveFromWishList(movie.id);
+      } else {
+        this.actionAddToWishList(movie);
+      }
+    },
   },
   computed: {
     ...mapGetters(["movieGenre", "isOnWishList", "isOnCart"]),

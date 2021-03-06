@@ -19,6 +19,9 @@ const actions = {
   actionAddToWishList({ commit }, movie) {
     commit("addToWishList", movie);
   },
+  actionRemoveFromWishList({ commit }, id) {
+    commit("removeFromWishList", id);
+  },
   actionClearWishList({ commit }) {
     commit("clearWishList");
   },
