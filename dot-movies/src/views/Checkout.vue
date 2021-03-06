@@ -1,9 +1,15 @@
 <template>
-  <div>Checkou</div>
+  <div>
+    <CheckoutForm />
+  </div>
 </template>
 
 <script>
-export default {};
+import CheckoutForm from "../components/Forms/Checkout/index";
+export default {
+  name: "Checkout",
+  components: { CheckoutForm },
+};
 </script>
 
 <style>

@@ -8,15 +8,24 @@ const getters = {
   allGenres: (state) => state.genres,
   movieGenre: (state) => (id) => {
     const genre = state.genres.find((genre) => genre.id === id);
-    if (genre !== -1) return genre.name;
-    return "-";
+    if (!genre) return "-";
+    return genre.name;
   },
 };
 
 const actions = {
   async getGenres({ commit }) {
-    const response = await axiosClient.get("/genre/movie/list");
-    commit("setGenres", response.data.genres);
+    return new Promise((resolve, reject) => {
+      axiosClient
+        .get("/genre/movie/list")
+        .then((response) => {
+          commit("setGenres", response.data.genres);
+          resolve({ status: 200 });
+        })
+        .catch((err) => {
+          reject({ status: 400 });
+        });
+    });
   },
 };
 

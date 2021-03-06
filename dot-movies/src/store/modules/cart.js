@@ -5,6 +5,7 @@ const state = {
 
 const getters = {
   allCartItems: (state) => state.cartItems,
+  cartItemsAmount: (state) => state.cartItems.length,
   showCart: (state) => state.showCart,
   isOnCart: (state) => (id) => state.cartItems.find((elem) => elem.id === id),
   cartTotalPrice: (state) =>

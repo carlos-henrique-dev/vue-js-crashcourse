@@ -1,14 +1,18 @@
 <template>
   <Header />
   <router-view />
+  <Cart />
+  <WishList />
 </template>
 
 <script>
-import Header from "./components/Header";
+import Header from "./components/shared/Header";
+import Cart from "./components/Cart/index";
+import WishList from "./components/Wishlist/index";
 
 export default {
   name: "App",
-  components: { Header },
+  components: { Header, Cart, WishList },
 };
 </script>
 

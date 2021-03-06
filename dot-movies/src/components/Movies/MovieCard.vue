@@ -53,7 +53,8 @@ export default {
   methods: {
     ...mapActions(["actionAddToCart", "actionAddToWishList"]),
     getImageUrl(url) {
-      return `http://image.tmdb.org/t/p/w200${url}`;
+      if (!!url) return `http://image.tmdb.org/t/p/w200${url}`;
+      return "";
     },
     getDate: (release_date) => {
       return new Date(release_date).toLocaleString("pt-BR", {

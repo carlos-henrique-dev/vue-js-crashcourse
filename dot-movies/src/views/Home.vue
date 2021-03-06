@@ -1,20 +1,12 @@
 <template>
   <Movies />
-  <Cart />
-  <WishList />
 </template>
 
 <script>
-import Movies from "../components/Movies";
-import Cart from "../components/Cart";
-import WishList from "../components/WishList";
-
-// import { mapGetters } from "vuex";
+import Movies from "../components/Movies/index";
 
 export default {
   name: "Home",
-  components: { Movies, Cart, WishList },
-
-  // computed: mapGetters(["showCart"]),
+  components: { Movies },
 };
 </script>
