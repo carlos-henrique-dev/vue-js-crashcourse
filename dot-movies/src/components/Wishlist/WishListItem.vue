@@ -11,7 +11,7 @@
       })
     }}</span>
 
-    <i @click="actionAddToCart(item)" class="fas fa-shopping-cart"></i>
+    <i @click="handleFromWishToCart(item)" class="fas fa-shopping-cart"></i>
     <i
       @click="!isOnCart ? actionRemoveFromCart(item.id) : null"
       class="fas fa-trash"
@@ -32,6 +32,14 @@ export default {
     ...mapActions(["actionAddToCart", "actionRemoveFromCart"]),
     getImageUrl(url) {
       return `http://image.tmdb.org/t/p/w200${url}`;
+    },
+    handleFromWishToCart(movie) {
+      const isOncart = this.$store.getters.isOnCart(movie.id);
+      if (isOncart) {
+        alert("Este filme já se encontra no carrinho.");
+        return;
+      }
+      this.actionAddToCart(movie);
     },
   },
 };
