@@ -61,6 +61,13 @@ export default {
     margin: auto;
   }
 
+  .title {
+    width: 100px;
+    line-height: 12px;
+    flex-wrap: wrap;
+    font-weight: 600;
+  }
+
   i {
     cursor: pointer;
     font-size: 14px;

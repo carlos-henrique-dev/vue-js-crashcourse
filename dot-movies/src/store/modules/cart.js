@@ -27,6 +27,9 @@ const actions = {
   actionRemoveFromCart({ commit }, id) {
     commit("removeFromCart", id);
   },
+  clearCart({ commit }) {
+    commit("clearCart");
+  },
 };
 
 const mutations = {
@@ -38,6 +41,7 @@ const mutations = {
     }
   },
   removeFromCart: (state, id) => (state.cartItems = state.cartItems.filter((item) => item.id !== id)),
+  clearCart: (state) => (state.cartItems = []),
 };
 
 export default {
