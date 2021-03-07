@@ -63,6 +63,7 @@ export default {
       "searchMovies",
       "getMovies",
       "setFilter",
+      "cleanMovies",
     ]),
     search() {
       if (this.windowWidth <= 900) {
@@ -71,6 +72,7 @@ export default {
       if (this.query !== "") {
         this.searchMovies(this.query);
       } else {
+        this.cleanMovies();
         this.getMovies();
       }
     },

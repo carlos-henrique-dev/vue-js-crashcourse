@@ -60,9 +60,13 @@ const actions = {
         });
     });
   },
+  cleanMovies({ commit }) {
+    commit("cleanMovies");
+  },
 };
 
 const mutations = {
+  cleanMovies: (state) => (state.movies = []),
   setMovies: (state, movies) => (state.movies = [...state.movies, ...movies]),
   setSearch: (state, movies) => (state.movies = movies),
   toggleLoading: (state) => (state.loading = !state.loading),
