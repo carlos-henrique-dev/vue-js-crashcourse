@@ -46,11 +46,15 @@ export default {
 
 <style lang="scss">
 .movies-container {
-  padding: 100px 50px 50px;
+  padding: 50px;
   box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-gap: 1.5rem;
+  @media (max-width: 900px) {
+    padding: 50px 25px;
+    grid-template-columns: repeat(4, 1fr);
+  }
   @media (max-width: 600px) {
     padding: 50px 25px;
     grid-template-columns: repeat(2, 1fr);

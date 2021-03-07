@@ -1,106 +1,60 @@
 <template>
   <div class="checkout-container">
+    <div class="back-btn">
+      <div class="btn-container">
+        <router-link to="/">
+          <i class="fas fa-angle-left"></i> <span> Voltar</span>
+        </router-link>
+      </div>
+    </div>
+
     <div class="title">
       <h1>Finalizar compra</h1>
     </div>
-    <div class="checkout-area">
-      <form @submit="onSubmit" class="user-info-form">
-        <div class="form-control row">
-          <input type="text" name="text" placeholder="Nome Completo" />
-        </div>
-
-        <div class="form-control col-4">
-          <input type="tel" v-mask="'###.###.###-##'" placeholder="CPF" />
-        </div>
-
-        <div class="form-control col-4">
-          <input
-            type="text"
-            name="day"
-            v-mask="'(##) # ####-####'"
-            placeholder="Celular"
-          />
-        </div>
-
-        <div class="form-control row">
-          <input type="text" name="day" placeholder="E-mail" />
-        </div>
-
-        <div class="form-control col-3">
-          <input
-            type="text"
-            name="day"
-            v-mask="'#####-###'"
-            placeholder="CEP"
-          />
-        </div>
-
-        <div class="form-control col-5">
-          <input type="text" name="day" placeholder="Endereço" />
-        </div>
-
-        <div class="form-control col-4">
-          <input type="text" name="day" placeholder="Cidade" />
-        </div>
-
-        <div class="form-control col-4">
-          <input type="text" name="day" placeholder="Estado" />
-        </div>
-      </form>
-      <div class="cart">
-        <table>
-          <tr>
-            <th>Imagem</th>
-            <th>Nome</th>
-            <th>Qtd</th>
-            <th>Preço</th>
-          </tr>
-
-          <tr v-for="cartItem in allCartItems" :key="cartItem.di">
-            <td><img :src="getImageUrl(cartItem.poster_path)" /></td>
-            <td>{{ cartItem.title }}</td>
-            <td>1</td>
-            <td>{{ renderPrice(cartItem.price) }}</td>
-            <td>
-              <i
-                @click="actionRemoveFromCart(item.id)"
-                class="fas fa-trash"
-              ></i>
-            </td>
-          </tr>
-        </table>
-
-        <div class="cart-total">
-          <span>Total:</span>
-          <span class="total-price">{{
-            cartTotalPrice.toLocaleString("pt-BR", {
-              style: "currency",
-              currency: "BRL",
-            })
-          }}</span>
-        </div>
-
-        <button>Finalizar</button>
-      </div>
+    <div class="content">
+      <user-form :formData="formData" ref="form" />
+      <cart-summary @finish-purchase="validateFormData" />
     </div>
   </div>
+
+  <transition name="modal" v-show="submittedAlert.show">
+    <div class="sumbitted-alert" :class="submittedAlert.show ? 'show' : ''">
+      <div class="content">
+        <h1>Obrigado, {{ submittedAlert.userName }}!</h1>
+        <span>Sua compra foi finalizada com sucesso!</span>
+        <router-link to="/" @click="closeSubmmittedAlert">
+          Ir para loja
+        </router-link>
+      </div>
+    </div>
+  </transition>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import currencyConverter from "../../../helpers/currencyConverter";
-import { mask } from "vue-the-mask";
+import UserForm from "./UserForm";
+import CartSummary from "./CartSummary";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "CheckoutForm",
-  directives: { mask },
-  computed: mapGetters(["allCartItems", "cartTotalPrice"]),
+  components: {
+    UserForm,
+    CartSummary,
+  },
+  data() {
+    return {
+      formData: {},
+    };
+  },
+  computed: mapGetters(["submittedAlert", "isSubmitting"]),
   methods: {
-    renderPrice(value) {
-      return currencyConverter(value);
-    },
-    getImageUrl(url) {
-      return `http://image.tmdb.org/t/p/w200${url}`;
+    ...mapActions(["actionRemoveFromCart", "closeSubmmittedAlert"]),
+    async validateFormData() {
+      const form = this.$refs.form.$refs.userInfoForm;
+      const validation = await form.validate();
+      if (validation.valid) {
+        this.$store.dispatch("submitForm", this.formData);
+      }
     },
   },
 };
@@ -114,142 +68,132 @@ export default {
   flex-direction: column;
   padding: 30px 70px 0;
 
+  .back-btn {
+    width: 100%;
+    align-items: flex-start;
+    margin-bottom: 10px;
+
+    .btn-container {
+      width: 80px;
+      a {
+        text-decoration: none;
+        cursor: pointer;
+        background: #6558f5;
+        border-radius: 10px;
+        padding: 5px 10px;
+        color: #fff;
+        transition: transform 0.3s;
+      }
+    }
+
+    .btn-container:active {
+      transform: scale(0.95);
+    }
+  }
+
   .title {
     display: block;
     width: 100%;
     margin-bottom: 30px;
     h1 {
+      color: #293845;
       margin: 0;
       font-weight: normal;
       font-size: 28px;
     }
   }
 
-  .checkout-area {
-    box-sizing: border-box;
-    width: 100%;
+  .content {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-content: center;
+  }
+}
+
+.sumbitted-alert {
+  position: fixed;
+  z-index: 9998;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: table;
+  transition: opacity 0.3s ease;
+
+  .content {
+    transition: all 0.3s ease;
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    transform: translate(-50%, 100px);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+
+    text-align: center;
+    width: 300px;
+    height: 200px;
+    background: #fff;
+    border: 3px solid #cecece;
+    box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.1);
   }
 
-  .user-info-form {
-    display: grid;
-    grid-gap: 10px;
-    grid-template-columns: repeat(8, 1fr);
-    width: 45%;
-
-    .form-control {
-      color: #fff;
-      border-radius: 5px;
-      margin: 0 15px 15px 0;
-
-      input {
-        height: 35px;
-        width: 100%;
-        border: 2px solid #cecece;
-        border-radius: 5px;
-        padding-left: 10px;
-        transition: transform 0.3s;
-        font-size: 18px;
-        color: #595959;
-      }
-      input::placeholder {
-        color: #cecece;
-        font-size: 18px;
-      }
-      input:focus {
-        outline: none;
-        transform: scale(1.05);
-      }
-
-      &.row {
-        grid-column: span 8;
-      }
-      &.col-3 {
-        grid-column: span 3;
-      }
-      &.col-4 {
-        grid-column: span 4;
-      }
-      &.col-5 {
-        grid-column: span 5;
-      }
-    }
+  h1 {
+    margin: 0;
+    color: #585858;
+    font-size: 20px;
+    font-weight: 400;
   }
 
-  .user-info-form {
-    .form-control:nth-last-of-type(-n + 2) {
-      margin-bottom: 0;
-    }
+  span {
+    font-size: 12px;
   }
 
-  .cart {
-    width: 45%;
-    box-sizing: border-box;
+  a {
+    text-decoration: none;
+    cursor: pointer;
+    width: 80%;
+    background: #6558f5;
+    border: none;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #fff;
+    border-radius: 5px;
+    transition: transform 0.3s;
+  }
 
-    table {
-      flex: 1 1 auto;
-      text-align: left;
-      width: 100%;
-      border-collapse: collapse;
+  a:active {
+    transform: scale(0.95);
+  }
+  a:focus {
+    outline: none;
+  }
+}
 
-      th,
-      td {
-        margin-right: 5px;
-      }
+.modal-enter {
+  opacity: 0;
+}
 
-      th {
-        padding-bottom: 10px;
+.modal-leave-active {
+  opacity: 0;
+}
 
-        font-weight: normal;
-        color: #7b7b7b;
-      }
+.modal-enter .modal-container,
+.modal-leave-active .modal-container {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+}
 
-      tr {
-        td:nth-child(3) {
-          text-align: center;
-        }
-      }
-
-      img {
-        width: 60px;
-        height: 60px;
-      }
-
-      i {
-        color: #8d8d8d;
-        cursor: pointer;
-      }
-
-      i:hover,
-      i:active {
-        color: red;
-      }
-    }
-
-    .cart-total {
-      position: relative;
-      margin-top: 10px;
-      display: flex;
-      justify-content: space-between;
-
-      .total-price {
-        font-weight: bold;
-      }
-    }
-
-    button {
-      width: 100%;
-      background: #6558f5;
-      border: none;
-      padding: 15px 0;
-      font-size: 16px;
-      color: #fff;
-      border-radius: 5px;
-      margin-top: 30px;
+@media (max-width: 900px) {
+  .checkout-container {
+    padding: 30px 30px 70px;
+    .content {
+      flex-direction: column;
     }
   }
 }
 </style>
+
+

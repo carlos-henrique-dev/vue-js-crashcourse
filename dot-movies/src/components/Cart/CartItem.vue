@@ -6,12 +6,7 @@
 
     <span class="amount">1</span>
 
-    <span class="price">{{
-      item.price.toLocaleString("pt-BR", {
-        style: "currency",
-        currency: "BRL",
-      })
-    }}</span>
+    <span class="price"> {{ renderPrice(item.price) }}</span>
 
     <i @click="actionRemoveFromCart(item.id)" class="fas fa-trash"></i>
   </div>
@@ -19,6 +14,8 @@
 
 <script>
 import { mapActions } from "vuex";
+import currencyParser from "../../helpers/currencyParser";
+import urlGenerator from "../../helpers/urlGenerator";
 
 export default {
   name: "CartItem",
@@ -27,8 +24,11 @@ export default {
   },
   methods: {
     ...mapActions(["actionAddToCart", "actionRemoveFromCart"]),
+    renderPrice(value) {
+      return currencyParser(value);
+    },
     getImageUrl(url) {
-      return `http://image.tmdb.org/t/p/w200${url}`;
+      return urlGenerator(url);
     },
   },
 };

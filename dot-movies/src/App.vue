@@ -1,6 +1,10 @@
 <template>
   <Header />
-  <router-view />
+  <router-view v-slot="{ Component }">
+    <transition name="fade" mode="out-in">
+      <component :is="Component"></component>
+    </transition>
+  </router-view>
   <Cart />
   <WishList />
 </template>
@@ -33,5 +37,19 @@ html {
 ::-webkit-scrollbar {
   width: 0px;
   background: transparent;
+}
+
+.page {
+  padding-top: 50px;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-active {
+  opacity: 0;
 }
 </style>

@@ -3,7 +3,12 @@
     <router-link to="/">
       <h1>LOGO</h1>
     </router-link>
-    <div class="search-bar">
+
+    <div
+      v-show="windowWidth"
+      class="search-bar"
+      :class="showSearchBar ? 'show-search' : 'hide'"
+    >
       <input
         type="text"
         class="search"
@@ -13,7 +18,13 @@
       />
       <i @click="search" class="fas fa-search"></i>
     </div>
+
     <div class="options">
+      <i
+        @click="showSearchBar = !showSearchBar"
+        class="fas fa-search search-btn"
+        v-show="windowWidth <= 768"
+      ></i>
       <i @click.prevent="toggleWishList" class="fas fa-heart wish-list"></i>
       <div @click.prevent="toggleCart">
         <span class="cart-count" :class="cartItemsAmount !== 0 ? 'show' : ''">{{
@@ -30,7 +41,21 @@ import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "Header",
-  computed: mapGetters(["cartItemsAmount", "filterOn"]),
+  computed: {
+    ...mapGetters(["cartItemsAmount", "filterOn"]),
+  },
+  data() {
+    return {
+      query: "",
+      windowWidth: window.innerWidth,
+      showSearchBar: this.windowWidth >= 768,
+    };
+  },
+  mounted() {
+    window.onresize = () => {
+      this.windowWidth = window.innerWidth;
+    };
+  },
   methods: {
     ...mapActions([
       "toggleCart",
@@ -40,17 +65,15 @@ export default {
       "setFilter",
     ]),
     search() {
+      if (this.windowWidth <= 900) {
+        this.showSearchBar = !this.showSearchBar;
+      }
       if (this.query !== "") {
         this.searchMovies(this.query);
       } else {
         this.getMovies();
       }
     },
-  },
-  data() {
-    return {
-      query: "",
-    };
   },
 };
 </script>
@@ -143,6 +166,7 @@ export default {
       }
     }
 
+    .search-btn,
     .wish-list,
     .cart {
       cursor: pointer;
@@ -152,16 +176,55 @@ export default {
       transition: transform 0.3s, color 0.3s;
     }
 
+    .search-btn,
     .wish-list {
       margin-right: 20px;
     }
 
+    .search-btn:active,
     .wish-list:hover,
     .cart:hover,
     .wish-list:active,
     .cart:active {
       color: #fbe192;
       transform: scale(1.2);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .nav {
+    padding: 0 15px;
+    justify-content: space-between;
+    z-index: 10;
+
+    .options {
+      .search-btn,
+      .wish-list,
+      .cart {
+        font-size: 20px;
+      }
+
+      .search-btn,
+      .wish-list {
+        margin-right: 10px;
+      }
+    }
+
+    .search-bar {
+      position: absolute;
+      left: 50%;
+      transition: all 0.3s;
+
+      &.hide {
+        top: -50px;
+        transform: translate(-50%, -50px);
+      }
+
+      &.show-search {
+        top: 30px;
+        transform: translate(-50%, 30px);
+      }
     }
   }
 }

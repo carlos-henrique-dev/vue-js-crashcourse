@@ -26,17 +26,14 @@
         </div>
       </div>
 
-      <span class="price">{{
-        price.toLocaleString("pt-BR", {
-          style: "currency",
-          currency: "BRL",
-        })
-      }}</span>
+      <span class="price">
+        {{ renderPrice(price) }}
+      </span>
     </div>
 
     <div class="action" :class="!!isOnCart(movie.id) ? 'on-cart' : ''">
-      <button @click="actionAddToCart({ ...movie, price })">
-        {{ !isOnCart(movie.id) ? "Adicionar" : "Adicionado" }}
+      <button @click="addRemoveMovie({ ...movie, price })">
+        {{ !isOnCart(movie.id) ? "Adicionar" : "Remover" }}
       </button>
     </div>
   </div>
@@ -44,6 +41,9 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import currencyParser from "../../helpers/currencyParser";
+import urlGenerator from "../../helpers/urlGenerator";
+import dateParser from "../../helpers/dateParser";
 
 export default {
   name: "MovieCard",
@@ -55,17 +55,23 @@ export default {
       "actionAddToCart",
       "actionAddToWishList",
       "actionRemoveFromWishList",
+      "actionRemoveFromCart",
     ]),
+    renderPrice(value) {
+      return currencyParser(value);
+    },
+    addRemoveMovie(movie) {
+      if (this.$store.getters.isOnCart(movie.id)) {
+        this.actionRemoveFromCart(movie.id);
+      } else {
+        this.actionAddToCart(movie);
+      }
+    },
     getImageUrl(url) {
-      if (!!url) return `http://image.tmdb.org/t/p/w200${url}`;
-      return "";
+      return urlGenerator(url);
     },
     getDate: (release_date) => {
-      return new Date(release_date).toLocaleString("pt-BR", {
-        day: "2-digit",
-        month: "long",
-        year: "numeric",
-      });
+      return dateParser(release_date);
     },
     randomPrice: () => Math.floor(Math.random() * 10000 + 2000) / 100,
     handleWishList(movie) {
@@ -120,7 +126,7 @@ export default {
       transition: transform 0.3s;
 
       &.on-wish {
-        color: red;
+        color: #f03434;
       }
     }
 
@@ -211,8 +217,7 @@ export default {
 
     &.on-cart {
       button {
-        background: #8a8a8a;
-        cursor: default;
+        background: #f64747;
       }
     }
   }
@@ -220,5 +225,15 @@ export default {
 
 .card:hover {
   transform: scale(1.05);
+}
+
+@media (max-width: 900px) {
+  .card {
+    .cover {
+      img {
+        height: 180px;
+      }
+    }
+  }
 }
 </style>

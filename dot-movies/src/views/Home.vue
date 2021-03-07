@@ -1,5 +1,7 @@
 <template>
-  <Movies />
+  <div class="home page">
+    <Movies />
+  </div>
 </template>
 
 <script>

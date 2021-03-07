@@ -4,16 +4,13 @@
 
     <h1 class="title">{{ item.title }}</h1>
 
-    <span class="price">{{
-      item.price.toLocaleString("pt-BR", {
-        style: "currency",
-        currency: "BRL",
-      })
-    }}</span>
+    <span class="price">
+      {{ renderPrice(item.price) }}
+    </span>
 
     <i @click="handleFromWishToCart(item)" class="fas fa-shopping-cart"></i>
     <i
-      @click="!isOnCart ? actionRemoveFromCart(item.id) : null"
+      @click="!isOnCart ? actionRemoveFromWishList(item.id) : null"
       class="fas fa-trash"
     ></i>
   </div>
@@ -21,6 +18,8 @@
 
 <script>
 import { mapActions } from "vuex";
+import currencyParser from "../../helpers/currencyParser";
+import urlGenerator from "../../helpers/urlGenerator";
 
 export default {
   name: "WishListItem",
@@ -29,9 +28,12 @@ export default {
   },
 
   methods: {
-    ...mapActions(["actionAddToCart", "actionRemoveFromCart"]),
+    ...mapActions(["actionAddToCart", "actionRemoveFromWishList"]),
     getImageUrl(url) {
-      return `http://image.tmdb.org/t/p/w200${url}`;
+      return urlGenerator(url);
+    },
+    renderPrice(value) {
+      return currencyParser(value);
     },
     handleFromWishToCart(movie) {
       const isOncart = this.$store.getters.isOnCart(movie.id);

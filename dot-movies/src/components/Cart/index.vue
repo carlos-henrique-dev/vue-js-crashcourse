@@ -18,12 +18,9 @@
 
       <div class="cart-total">
         <span>Total:</span>
-        <span class="total-price">{{
-          cartTotalPrice.toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL",
-          })
-        }}</span>
+        <span class="total-price">
+          {{ renderPrice(cartTotalPrice) }}
+        </span>
       </div>
 
       <router-link
@@ -41,6 +38,7 @@
 import CartItem from "./CartItem";
 import { mapGetters, mapActions } from "vuex";
 import Menu from "../Menu/index";
+import currencyParser from "../../helpers/currencyParser";
 
 export default {
   name: "Cart",
@@ -48,6 +46,9 @@ export default {
   computed: mapGetters(["showCart", "allCartItems", "cartTotalPrice"]),
   methods: {
     ...mapActions(["toggleCart", "clearCart"]),
+    renderPrice(value) {
+      return currencyParser(value);
+    },
   },
 };
 </script>

@@ -3,6 +3,7 @@ import movies from "./modules/movies";
 import genres from "./modules/genres";
 import cart from "./modules/cart";
 import wishlist from "./modules/wishlist";
+import form from "./modules/form";
 
 export default createStore({
   modules: {
@@ -10,5 +11,6 @@ export default createStore({
     genres,
     cart,
     wishlist,
+    form,
   },
 });
