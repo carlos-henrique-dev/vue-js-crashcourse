@@ -1,11 +1,5 @@
 # Projects in this repo
 
-## fire-extinguisher-client
-### Home page
-![Alt Text](/fire-extinguisher-client/screenshots/hero.png)
-### Fire Extinguisher list
-![Alt Text](/fire-extinguisher-client/screenshots/fire-extingueshers-list.png)
-
 
 ### vuex-todo-manager
 ![Alt Text](/gifs/vuex-todo.gif)
